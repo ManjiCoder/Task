@@ -34,7 +34,6 @@ export default function AddEdit() {
 
   const handleAddEdit = (e) => {
     e.preventDefault();
-    console.log(data.hobbies);
     const p = fetch(
       isEdit
         ? `${config.BASE_URL}/employee/${isEdit}`
@@ -66,7 +65,7 @@ export default function AddEdit() {
         <h1>Add-Edit Page</h1>
       </header>
 
-      <form onSubmit={handleAddEdit}>
+      <form>
         <section className={styles.container}>
           <div>
             <label htmlFor='name'>Name:</label>
@@ -176,7 +175,7 @@ export default function AddEdit() {
           <button className='btn-primary' onClick={handleAddEdit}>
             Save
           </button>
-          <button className='btn-primary' onClick={() => navigate(-1)}>
+          <button className='btn-primary' onClick={() => navigate('/')}>
             Back
           </button>
         </section>
