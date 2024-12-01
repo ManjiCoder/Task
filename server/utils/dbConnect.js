@@ -3,7 +3,12 @@ import config from './config.js';
 const mongoURL = config.MONGO_URL;
 
 const dbConnect = async () => {
-  return await mongoose.connect(mongoURL);
+  try {
+    console.log('Connected to DB');
+    return await mongoose.connect(mongoURL);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export default dbConnect;
