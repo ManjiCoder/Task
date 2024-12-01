@@ -107,7 +107,14 @@ export default function Home() {
                 </ul>
               </td>
               <td>
-                <button className='icon' onClick={() => navigate('/add-edit')}>
+                <button
+                  className='icon'
+                  onClick={() =>
+                    navigate('/add-edit', {
+                      state: item,
+                    })
+                  }
+                >
                   <PencilSquareIcon />
                 </button>
                 <button className='icon' onClick={() => handleDelete(item._id)}>

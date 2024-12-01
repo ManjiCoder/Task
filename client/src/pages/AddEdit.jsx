@@ -1,7 +1,7 @@
 import { ArrowLeftCircleIcon } from '@heroicons/react/20/solid';
 import Cookies from 'js-cookie';
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styles from '../styles/add-edit.module.css';
 import config from '../utils/config';
@@ -9,21 +9,24 @@ import { departments, headersList, hobbies } from '../utils/constant';
 
 export default function AddEdit() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const isEdit = state?._id;
   const [data, setData] = useState({
-    name: 'Test',
-    department: 'Legal',
-    address: 'Test',
-    doj: '2024-12-07',
-    gender: 'male',
-    hobbies: ['Reading'],
+    name: state?.name || '',
+    department: state?.department || '',
+    address: state?.address || '',
+    doj: state?.doj || '',
+    gender: state?.gender || '',
+    hobbies: state?.hobbies || [],
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
     if (name === 'hobbies') {
-      const newHobbie = Array.from(new Set([...data.hobbies, value]));
-      setData({ ...data, [name]: newHobbie });
-      console.log(data.hobbies)
+      const newHobbies = checked
+        ? [...new Set([...data.hobbies, value])]
+        : data.hobbies.filter((item) => item !== value);
+      setData({ ...data, hobbies: newHobbies });
     } else {
       setData({ ...data, [name]: value });
     }
@@ -32,14 +35,19 @@ export default function AddEdit() {
   const handleAddEdit = (e) => {
     e.preventDefault();
     console.log(data.hobbies);
-    const p = fetch(`${config.BASE_URL}/employee`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        ...headersList,
-        authorization: `Bearer ${Cookies.get('token')}`,
-      },
-    })
+    const p = fetch(
+      isEdit
+        ? `${config.BASE_URL}/employee/${isEdit}`
+        : `${config.BASE_URL}/employee`,
+      {
+        method: isEdit ? 'PATCH' : 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          ...headersList,
+          authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      }
+    )
       .then((res) => res.json())
       .then((v) => console.log(v));
 
@@ -148,11 +156,11 @@ export default function AddEdit() {
               {hobbies.map((item) => (
                 <div key={item}>
                   <input
-                    defaultChecked={data.hobbies.includes(item)}
-                    onChange={handleChange}
                     type='checkbox'
-                    name='hobbies'
+                    name={'hobbies'}
                     id={item}
+                    checked={data.hobbies.includes(item)}
+                    onChange={handleChange}
                     value={item}
                   />
                   <label htmlFor={item}>{item}</label>
