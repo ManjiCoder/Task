@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import EmployeeContext from '../context/EmployeeContext';
 import config from '../utils/config';
-import headersList from '../utils/constant';
+import { headersList } from '../utils/constant';
 
 export default function Home() {
   const { isAuth, setIsAuth } = useContext(EmployeeContext);

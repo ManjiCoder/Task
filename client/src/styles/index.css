@@ -34,16 +34,20 @@ form {
   padding: 20px;
 }
 
-label, select {
+label,
+select {
   display: inline-block;
-  width: 90px;
+  min-width: 90px;
   font-size: 1rem;
   font-weight: bold;
 }
-input, textarea {
+select {
+  padding: 10px;
+}
+form *:not([type='radio'], label, section) {
   padding: 10px;
   font-size: 1rem;
-  box-shadow: 1px 1px 1px var(--primay);
+  box-shadow: 1px 1px 4px var(--primay);
   outline: none;
   border-radius: var(--rounded);
 }

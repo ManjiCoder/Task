@@ -1,0 +1,47 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  & div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+}
+
+main {
+  padding: 0;
+  padding-bottom: 30px;
+}
+
+.heading {
+  background-color: black;
+  color: white;
+  display: flex;
+  padding: 5px 16px;
+  column-gap: 2rem;
+}
+.icon {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  cursor: pointer;
+  color: white;
+}
+
+.hobbies {
+  display: flex;
+  flex-direction: column;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 30px;
+}
+.btnContainer button:nth-child(1) {
+  background-color: rgb(19, 89, 109);
+}
+.btnContainer button:nth-child(2) {
+  background-color: rgb(70, 141, 0);
+}

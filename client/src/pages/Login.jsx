@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import EmployeeContext from '../context/EmployeeContext';
-import headersList from '../utils/constant';
+import { headersList } from '../utils/constant';
 export default function Login() {
   const navigate = useNavigate();
   const [data, setData] = useState({
