@@ -59,7 +59,7 @@ export default function Home() {
     getEmployees();
   }, []);
 
-  const handleAuth = () => {
+  const handleLogout = () => {
     if (isAuth) {
       toast.success('Logout Successfully');
       Cookies.remove('token');
@@ -74,7 +74,7 @@ export default function Home() {
   return (
     <main>
       <h1>My Company</h1>
-      <button onClick={handleAuth} className='authBtn'>
+      <button onClick={handleLogout} className='authBtn'>
         {isAuth ? 'Logout' : 'Login'}
       </button>
 

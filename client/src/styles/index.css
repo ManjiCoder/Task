@@ -34,13 +34,13 @@ form {
   padding: 20px;
 }
 
-label {
+label, select {
   display: inline-block;
   width: 90px;
   font-size: 1rem;
   font-weight: bold;
 }
-input {
+input, textarea {
   padding: 10px;
   font-size: 1rem;
   box-shadow: 1px 1px 1px var(--primay);

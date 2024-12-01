@@ -50,7 +50,7 @@ export default function Login() {
       <h1>Sign Up</h1>
       <form onSubmit={handleLogin}>
         <div>
-          <label htmlFor='name'>Email:</label>
+          <label htmlFor='name'>Name:</label>
           <input
             id='name'
             type='name'
