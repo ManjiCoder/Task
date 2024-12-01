@@ -3,7 +3,9 @@ import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import EmployeeContext from '../context/EmployeeContext';
+import config from '../utils/config';
 import { headersList } from '../utils/constant';
+
 export default function Login() {
   const navigate = useNavigate();
   const [data, setData] = useState({
@@ -21,7 +23,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    let p = fetch('http://localhost:3000/auth/login', {
+    let p = fetch(`${config.BASE_URL}/auth/login`, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: headersList,
