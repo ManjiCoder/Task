@@ -84,7 +84,7 @@ button {
 }
 
 table {
-  margin: 20px auto;
+  margin: auto;
   width: 80%;
   border-collapse: collapse;
   border: 2px solid var(--primay);

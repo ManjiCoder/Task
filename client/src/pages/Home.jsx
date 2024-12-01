@@ -49,7 +49,7 @@ export default function Home() {
         console.log(v);
       });
 
-    toast.promise(request, {
+    toast.promise(p, {
       pending: 'Deleting employee...',
       success: 'Employee deleted successfully! 🎉',
       error: 'Failed to delete employee. Please try again. 🤯',

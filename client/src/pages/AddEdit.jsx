@@ -1,8 +1,11 @@
 import { ArrowLeftCircleIcon } from '@heroicons/react/20/solid';
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import styles from '../styles/add-edit.module.css';
-import { departments, hobbies } from '../utils/constant';
+import config from '../utils/config';
+import { departments, headersList, hobbies } from '../utils/constant';
 
 export default function AddEdit() {
   const navigate = useNavigate();
@@ -12,17 +15,39 @@ export default function AddEdit() {
     address: 'Test',
     doj: '2024-12-07',
     gender: 'male',
-    hobbie: ['Reading'],
+    hobbies: ['Reading'],
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+    if (name === 'hobbies') {
+      const newHobbie = Array.from(new Set([...data.hobbies, value]));
+      setData({ ...data, [name]: newHobbie });
+      console.log(data.hobbies)
+    } else {
+      setData({ ...data, [name]: value });
+    }
   };
 
   const handleAddEdit = (e) => {
     e.preventDefault();
-    console.log(data);
+    console.log(data.hobbies);
+    const p = fetch(`${config.BASE_URL}/employee`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        ...headersList,
+        authorization: `Bearer ${Cookies.get('token')}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((v) => console.log(v));
+
+    toast.promise(p, {
+      pending: 'Loading...',
+      success: 'Employee saved successfully! 🎉',
+      error: 'Failed to save employee. Please try again. 🤯',
+    });
   };
   return (
     <main>
@@ -123,7 +148,8 @@ export default function AddEdit() {
               {hobbies.map((item) => (
                 <div key={item}>
                   <input
-                    defaultChecked={data.hobbie.includes(item)}
+                    defaultChecked={data.hobbies.includes(item)}
+                    onChange={handleChange}
                     type='checkbox'
                     name='hobbies'
                     id={item}
@@ -136,10 +162,10 @@ export default function AddEdit() {
           </div>
         </section>
         <section className={styles.btnContainer}>
-          <button className='btn-primary' type='submit'>
+          {/* <button className='btn-primary' onClick={handleAddEdit}>
             Update
-          </button>
-          <button className='btn-primary' type='submit'>
+          </button> */}
+          <button className='btn-primary' onClick={handleAddEdit}>
             Save
           </button>
           <button className='btn-primary' onClick={() => navigate(-1)}>
