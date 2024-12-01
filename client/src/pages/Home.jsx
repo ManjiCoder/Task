@@ -1,7 +1,11 @@
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import {
+  PencilSquareIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@heroicons/react/24/solid';
 import Cookies from 'js-cookie';
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import EmployeeContext from '../context/EmployeeContext';
 import config from '../utils/config';
@@ -30,13 +34,25 @@ export default function Home() {
     }
   };
 
-  const handleDelete = async (id) => {
-    const p = await fetch(`${config.BASE_URL}/employee/${id}`, {
+  const handleDelete = (id) => {
+    const p = fetch(`${config.BASE_URL}/employee/${id}`, {
       method: 'DELETE',
       headers: {
         ...headersList,
         authorization: `Bearer ${Cookies.get('token')}`,
       },
+    })
+      .then((res) => res.json())
+      .then((v) => {
+        const updatedData = data.filter((v) => v._id !== id);
+        setData(updatedData);
+        console.log(v);
+      });
+
+    toast.promise(request, {
+      pending: 'Deleting employee...',
+      success: 'Employee deleted successfully! 🎉',
+      error: 'Failed to delete employee. Please try again. 🤯',
     });
   };
   useEffect(() => {
@@ -47,7 +63,11 @@ export default function Home() {
     if (isAuth) {
       toast.success('Logout Successfully');
       Cookies.remove('token');
-      navigate('/login');
+      setIsAuth(false);
+
+      setTimeout(() => {
+        navigate('/login');
+      }, 500);
     }
   };
 
@@ -98,6 +118,10 @@ export default function Home() {
           ))}
         </tbody>
       </table>
+
+      <Link role='button' to='/add-edit' className='addIcon'>
+        <PlusIcon />
+      </Link>
     </main>
   );
 }

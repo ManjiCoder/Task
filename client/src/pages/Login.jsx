@@ -41,9 +41,9 @@ export default function Login() {
       });
 
     toast.promise(p, {
-      pending: 'Promise is pending',
-      success: 'Promise resolved 👌',
-      error: 'Promise rejected 🤯',
+      pending: 'Loading...',
+      success: 'Done',
+      error: 'Something Went Wrong🤯',
     });
   };
   return (

@@ -120,3 +120,16 @@ tbody ul {
   border-radius: var(--rounded);
   font-weight: bold;
 }
+
+.addIcon > svg {
+  display: block;
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  background-color: var(--primay);
+  color: white;
+  width: 40px;
+  outline: none;
+  padding: 4px;
+  border-radius: 50%;
+}
