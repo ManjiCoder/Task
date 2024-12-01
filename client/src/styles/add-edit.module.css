@@ -45,3 +45,8 @@ main {
 .btnContainer button:nth-child(2) {
   background-color: rgb(70, 141, 0);
 }
+
+.btnContainer a{
+  text-decoration: none;
+  text-align: center;
+}

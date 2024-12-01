@@ -1,11 +1,15 @@
 import Cookies from 'js-cookie';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import EmployeeContext from '../context/EmployeeContext';
+import config from '../utils/config';
 import { headersList } from '../utils/constant';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { setIsAuth } = useContext(EmployeeContext);
+
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -20,7 +24,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    let p = fetch('http://localhost:3000/auth/sign-up', {
+    let p = fetch(`${config.BASE_URL}/auth/sign-up`, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: headersList,

@@ -94,7 +94,7 @@ export default function AddEdit() {
               ))}
             </select>
           </div>
-          <div>
+          <div style={{ order: 1 }}>
             <label htmlFor='address'>Address:</label>
             <textarea
               name='address'
@@ -149,7 +149,7 @@ export default function AddEdit() {
               onChange={handleChange}
             />
           </div>
-          <div>
+          <div style={{ order: 2 }}>
             <label>Hobbies:</label>
             <div className={styles.hobbies}>
               {hobbies.map((item) => (
@@ -175,9 +175,9 @@ export default function AddEdit() {
           <button className='btn-primary' onClick={handleAddEdit}>
             Save
           </button>
-          <button className='btn-primary' onClick={() => navigate('/')}>
+          <Link to='/' className='btn-primary'>
             Back
-          </button>
+          </Link>
         </section>
       </form>
     </main>
