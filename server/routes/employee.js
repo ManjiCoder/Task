@@ -2,12 +2,17 @@ import { Router } from 'express';
 import fetchUser from '../middleware/fetchUser.js';
 import isAdnin from '../middleware/isAdmin.js';
 import EmployeeModal from '../models/employee.js';
+import db from '../utils/dbmySQL.js';
 const router = Router();
 
 // Route:1 for employee list => login required
 router.get('/', fetchUser, isAdnin, async (req, res) => {
   try {
-    const allEmployee = await EmployeeModal.find({});
+    // MongoDB query to get all employees
+    const [allEmployee] = await db.query('SELECT * FROM employees;');
+
+    // MongoDB query to get all employees
+    // const allEmployee = await EmployeeModal.find({});
     res.json({
       data: allEmployee,
     });

@@ -48,7 +48,9 @@ router.post('/sign-up', async (req, res) => {
 
     // mysqlDB Query to create user
     let newUser = await db.query(
-      `INSERT INTO users (name, email, password) VALUE('${name}','${email}','${hashPass}');`
+      `INSERT INTO users (name, email, password, role) VALUE('${name}','${email}','${hashPass}','${
+        role || 'user'
+      }');`
     );
     [newUser] = await db.query(
       'SELECT * FROM users WHERE _id = last_insert_id()'
