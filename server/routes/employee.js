@@ -58,10 +58,10 @@ router.post('/', fetchUser, isAdnin, async (req, res) => {
     const { name, department, doj, gender, address, hobbies } = req.body;
 
     // mysqlDB query to create new employee
-    let [employee] = await db.query(`INSERT INTO employees 
+    await db.query(`INSERT INTO employees 
       (name, department, doj, gender, address, hobbies) VALUE
       ('${name}','${department}','${doj}','${gender}','${address}','${hobbies}')`);
-    employee = await db.query(
+    let [employee] = await db.query(
       'SELECT * FROM employees WHERE _id = last_insert_id()'
     );
     employee = employee[0];
@@ -114,12 +114,12 @@ router.patch('/:id', fetchUser, isAdnin, async (req, res) => {
     const { name, department, doj, gender, address, hobbies } = req.body;
 
     // MongoDB query to update employee
-    let [updatedEmployee] = await db.query(`UPDATE employees
+    await db.query(`UPDATE employees
         SET name = '${name}', department = '${department}', doj = '${doj}', gender = '${gender}', address = '${address}', hobbies = '${hobbies}'
         WHERE _id = ${id};
     `);
 
-    [updatedEmployee] = await db.query(
+    let [updatedEmployee] = await db.query(
       `SELECT * FROM employees WHERE _id = ${id}`
     );
     updatedEmployee = updatedEmployee[0];
