@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import UserModel from '../models/User.js';
 import config from '../utils/config.js';
 import db from '../utils/dbmySQL.js';
 const router = Router();
@@ -17,12 +16,12 @@ router.post('/sign-up', async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const hashPass = bcrypt.hashSync(password, salt);
 
-    // mysqlDB
+    // mysqlDB Query to create find user email
     let [isUser] = await db.query(
       `SELECT email FROM users WHERE email = '${email}';`
     );
-    isUser = isUser[0]
-    console.log(isUser)
+    isUser = isUser[0];
+    console.log(isUser);
 
     // mongoDB
     // const isUser = await UserModel.findOne({ email });
@@ -39,12 +38,12 @@ router.post('/sign-up', async (req, res) => {
 
     // mysqlDB Query to create user
     let newUser = await db.query(
-      `INSERT INTO users (name, email, password) VALUE('${name}','${email}','${password}');`
+      `INSERT INTO users (name, email, password) VALUE('${name}','${email}','${hashPass}');`
     );
     [newUser] = await db.query(
       'SELECT * FROM users WHERE _id = last_insert_id()'
     );
-    newUser = newUser[0]
+    newUser = newUser[0];
     const payload = {
       id: newUser._id,
     };
@@ -71,8 +70,14 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // mysqlDB Query to create find user email
+    let [isUser] = await db.query(
+      `SELECT * FROM users WHERE email = '${email}';`
+    );
+    isUser = isUser[0];
+
     // MongoDB Query to create find user email
-    const isUser = await UserModel.findOne({ email });
+    // const isUser = await UserModel.findOne({ email });
     if (!isUser) {
       return res.status(400).json({ message: "User doesn't exists, signup" });
     }
