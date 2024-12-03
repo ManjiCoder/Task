@@ -29,7 +29,14 @@ router.get('/:id', fetchUser, isAdnin, async (req, res) => {
   try {
     const id = req.params.id;
     if (id) {
-      const employee = await EmployeeModal.findById(id);
+      // mysqlDB query to find employee
+      let [employee] = await db.query(
+        `SELECT * FROM employees WHERE _id = ${id}`
+      );
+      employee = employee[0];
+
+      // MongoDB query to find employee
+      // const employee = await EmployeeModal.findById(id);
       if (!employee) {
         return res.status(404).json({ message: 'user not found' });
       }
@@ -50,14 +57,25 @@ router.post('/', fetchUser, isAdnin, async (req, res) => {
   }
   try {
     const { name, department, doj, gender, address, hobbies } = req.body;
-    const employee = await EmployeeModal.create({
-      name,
-      department,
-      doj,
-      gender,
-      address,
-      hobbies,
-    });
+
+    // mysqlDB query to create new employee
+    let [employee] = await db.query(`INSERT INTO employees 
+      (name, department, doj, gender, address, hobbies) VALUE
+      ('${name}','${department}','${doj}','${gender}','${address}','${hobbies}')`);
+    employee = await db.query(
+      'SELECT * FROM employees WHERE _id = last_insert_id()'
+    );
+    employee = employee[0];
+
+    // MongoDB query to create new employee
+    // const employee = await EmployeeModal.create({
+    //   name,
+    //   department,
+    //   doj,
+    //   gender,
+    //   address,
+    //   hobbies,
+    // });
     res.status(201).json({
       message: 'Employee created successfully',
       employee,
