@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import fetchUser from '../middleware/fetchUser.js';
 import isAdnin from '../middleware/isAdmin.js';
-import EmployeeModal from '../models/employee.js';
 import db from '../utils/dbmySQL.js';
 const router = Router();
 
@@ -151,14 +150,28 @@ router.delete('/:id', fetchUser, isAdnin, async (req, res) => {
   }
   try {
     const id = req.params.id;
-    const employee = await EmployeeModal.findById(id);
+    // mysqlDB query to find employee
+    let [employee] = await db.query(
+      `SELECT * FROM employees WHERE _id = ${id}`
+    );
+    employee = employee[0];
+    // MongoDB query to find employee
+    // const employee = await EmployeeModal.findById(id);
 
     if (!employee) {
       return res.status(404).json({
         message: 'employee not found',
       });
     }
-    const deletedEmployee = await EmployeeModal.findByIdAndDelete(id);
+
+    // mysqlDB query to remove employee
+    let [deletedEmployee] = await db.query(
+      `SELECT * FROM  employees WHERE _id = ${id}`
+    );
+    deletedEmployee = deletedEmployee[0];
+    await db.query(`DELETE employees FROM employees WHERE _id = ${id}`);
+    // MongoDB query to remove employee
+    // const deletedEmployee = await EmployeeModal.findByIdAndDelete(id);
 
     res.status(200).json({
       message: 'Employee deleted successfully',
