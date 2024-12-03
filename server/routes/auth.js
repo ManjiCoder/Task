@@ -17,6 +17,16 @@ router.post('/sign-up', async (req, res) => {
     const hashPass = bcrypt.hashSync(password, salt);
 
     // mysqlDB Query to create find user email
+    // To create table for first entry
+    await db.query(`CREATE TABLE IF NOT EXISTS users (
+        _id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(50),
+        password VARCHAR(70),
+        email VARCHAR(50),
+        role VARCHAR(10) DEFAULT "user",
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`);
     let [isUser] = await db.query(
       `SELECT email FROM users WHERE email = '${email}';`
     );
@@ -70,6 +80,16 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // To create table for first entry
+    await db.query(`CREATE TABLE IF NOT EXISTS users (
+          _id INT AUTO_INCREMENT PRIMARY KEY,
+          name VARCHAR(50),
+          password VARCHAR(70),
+          email VARCHAR(50),
+          role VARCHAR(10) DEFAULT "user",
+          createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`);
     // mysqlDB Query to create find user email
     let [isUser] = await db.query(
       `SELECT * FROM users WHERE email = '${email}';`
