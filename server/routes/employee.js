@@ -95,7 +95,16 @@ router.patch('/:id', fetchUser, isAdnin, async (req, res) => {
   }
   try {
     const id = req.params.id;
-    const employee = await EmployeeModal.findById(id);
+
+    // mysqlDB query to find employee
+    let [employee] = await db.query(
+      `SELECT * FROM employees WHERE _id = ${id};`
+    );
+    employee = employee[0];
+    // console.log(employee);
+
+    // MongoDB query to find employee
+    // const employee = await EmployeeModal.findById(id);
 
     if (!employee) {
       return res.status(404).json({
@@ -105,11 +114,23 @@ router.patch('/:id', fetchUser, isAdnin, async (req, res) => {
 
     const { name, department, doj, gender, address, hobbies } = req.body;
 
-    const updatedEmployee = await EmployeeModal.findByIdAndUpdate(
-      id,
-      { name, department, doj, gender, address, hobbies },
-      { new: true }
+    // MongoDB query to update employee
+    let [updatedEmployee] = await db.query(`UPDATE employees
+        SET name = '${name}', department = '${department}', doj = '${doj}', gender = '${gender}', address = '${address}', hobbies = '${hobbies}'
+        WHERE _id = ${id};
+    `);
+
+    [updatedEmployee] = await db.query(
+      `SELECT * FROM employees WHERE _id = ${id}`
     );
+    updatedEmployee = updatedEmployee[0];
+
+    // MongoDB query to update employee
+    // const updatedEmployee = await EmployeeModal.findByIdAndUpdate(
+    //   id,
+    //   { name, department, doj, gender, address, hobbies },
+    //   { new: true }
+    // );
 
     res.status(200).json({
       message: 'Employee updated successfully',
